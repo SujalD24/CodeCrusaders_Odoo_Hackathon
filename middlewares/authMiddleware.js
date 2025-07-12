@@ -15,6 +15,11 @@ const authMiddleware = async (req, res, next) => {
     const user = await User.findById(decoded.id).select('-password');
     if (!user) return res.status(401).json({ msg: 'User not found' });
 
+    // Check if user is banned
+    if (user.isBanned) {
+      return res.status(403).json({ msg: 'Account suspended. Please contact support.' });
+    }
+
     req.user = user;
     next();
   } catch (err) {

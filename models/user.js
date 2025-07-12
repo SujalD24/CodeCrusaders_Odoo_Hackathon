@@ -9,7 +9,15 @@ const userSchema = new mongoose.Schema({
   skillsOffered: [String],
   skillsWanted: [String],
   availability: String,
-  isPublic: { type: Boolean, default: true }
+  isPublic: { type: Boolean, default: true },
+  isAdmin: { type: Boolean, default: false },
+  isBanned: { type: Boolean, default: false },
+  averageRating: { type: Number, default: 0 },
+  totalRatings: { type: Number, default: 0 },
+  completedSwaps: { type: Number, default: 0 }
 }, { timestamps: true });
+
+// Index for search functionality
+userSchema.index({ skillsOffered: 'text', location: 'text', name: 'text' });
 
 module.exports = mongoose.model('User', userSchema);
